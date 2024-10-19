@@ -1,0 +1,9 @@
+<custom-product-form>
+<div class="custom-product-form">
+{% form 'product', product %}
+  <button type="submit" name="add" class="btn-atc addTocartSubmit" data-variant-id="{{ product.selected_or_first_available_variant.id }}" data-has-free-gift="{% if product.tags contains 'has_free_gift' %} has_free_gift {% endif %}">
+    Add To Cart
+  </button>
+{% endform %}
+</div>
+</custom-product-form>

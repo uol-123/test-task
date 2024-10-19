@@ -1492,3 +1492,24 @@ a.product__text {
     border: none;
   }
 }
+
+.btn-atc {
+  background-color: rgb(30 96 168) ;
+  color: #fff ;
+  border: 1px solid rgb(30 96 168) ;
+  display: inline-block;
+  height: 36px;
+  width: 200px;
+  border-radius: 4px;
+}
+
+.btn-atc:disabled {
+  background-color: rgb(30 96 168) ;
+  color: #fff ;
+  opacity: 0.5;
+  border: 1px solid rgb(30 96 168) ;
+  display: inline-block;
+  height: 36px;
+  width: 200px;
+  border-radius: 4px;
+}

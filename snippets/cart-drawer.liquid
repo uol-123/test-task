@@ -116,13 +116,13 @@
                     </tr>
                   </thead>
 
-                  <tbody role="rowgroup">
+                  <tbody role="rowgroup" class="item-container">
                     {%- for item in cart.items -%}
                       <tr id="CartDrawer-Item-{{ item.index | plus: 1 }}" class="cart-item" role="row">
                         <td class="cart-item__media" role="cell" headers="CartDrawer-ColumnProductImage">
                           {% if item.image %}
                             {% comment %} Leave empty space due to a:empty CSS display: none rule {% endcomment %}
-                            <a href="{{ item.url }}" class="cart-item__link" tabindex="-1" aria-hidden="true"> </a>
+                            <a href="{% if item.product.type == "free-gift" %} # {% else %}{{ item.url }} {% endif %}" class="cart-item__link" tabindex="-1" aria-hidden="true"> </a>
                             <img
                               class="cart-item__image"
                               src="{{ item.image | image_url: width: 300 }}"
@@ -139,7 +139,7 @@
                             <p class="caption-with-letter-spacing light">{{ item.product.vendor }}</p>
                           {%- endif -%}
 
-                          <a href="{{ item.url }}" class="cart-item__name h4 break">
+                          <a href="{% if item.product.type == "free-gift" %} # {% else %}{{ item.url }} {% endif %}" class="cart-item__name h4 break">
                             {{- item.product.title | escape -}}
                           </a>
 
@@ -224,6 +224,7 @@
 
                         <td class="cart-item__totals right" role="cell" headers="CartDrawer-ColumnTotal">
                           {%- render 'loading-spinner' -%}
+                          {% unless item.product.type == "free-gift" %}
                           <div class="cart-item__price-wrapper">
                             {%- if item.original_line_price != item.final_line_price -%}
                               <div class="cart-item__discounted-prices">
@@ -261,6 +262,7 @@
                               </div>
                             {%- endif -%}
                           </div>
+                          {% endunless %}
                         </td>
                         {%- liquid
                           assign has_qty_rules = false
@@ -273,6 +275,8 @@
                             assign has_vol_pricing = true
                           endif
                         -%}
+                      
+                     
                         <td
                           class="cart-item__quantity {% if has_qty_rules or has_vol_pricing %} cart-item__quantity--info{% endif %}"
                           role="cell"
@@ -280,6 +284,7 @@
                         >
                           <quantity-popover>
                             <div class="cart-item__quantity-wrapper quantity-popover-wrapper">
+                              {% unless item.product.type  == "free-gift" %}
                               <div class="quantity-popover-container{% if has_qty_rules or has_vol_pricing %} quantity-popover-container--hover{% endif %}">
                                 <quantity-input class="quantity cart-quantity">
                                   <button class="quantity__button" name="minus" type="button">
@@ -327,6 +332,7 @@
                                   </button>
                                 </quantity-input>
                               </div>
+                              {% endunless %}
                               <cart-remove-button
                                 id="CartDrawer-Remove-{{ item.index | plus: 1 }}"
                                 data-index="{{ item.index | plus: 1 }}"
@@ -440,6 +446,7 @@
                             </div>
                           </quantity-popover>
                         </td>
+                  
                       </tr>
                     {%- endfor -%}
                   </tbody>
