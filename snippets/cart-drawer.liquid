@@ -341,11 +341,11 @@
                                 </quantity-input>
                               </div>
                               {% endunless %}
-                              {% unless item.product.tags contains "free_gift" %}
                               <cart-remove-button
                                 id="CartDrawer-Remove-{{ item.index | plus: 1 }}"
                                 data-index="{{ item.index | plus: 1 }}"
                                 data-product-tags="{{ item.product.tags }}"
+                               {% if item.product.tags contains "free_gift" %} style="display:none" {% endif %}
                               >
                                 <button
                                   type="button"
@@ -359,7 +359,7 @@
                                   </span>
                                 </button>
                               </cart-remove-button>
-                              {% endunless %}
+  
                             </div>
                             {%- if has_qty_rules or has_vol_pricing -%}
                               <button
