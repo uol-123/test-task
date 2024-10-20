@@ -18,6 +18,15 @@ if (!customElements.get("custom-product-form")) {
                 event.preventDefault();
                 let variantId = event.submitter.getAttribute("data-variant-id");
                 this.submitBtn.setAttribute('disabled',true);
+         const form = new FormData(this.form);
+        if (this.cart) {
+          form.append(
+            'sections',
+            this.cart.getSectionsToRender().map((section) => section.id)
+          );
+          form.append('sections_url', window.location.pathname);
+          this.cart.setActiveElement(document.activeElement);
+        }
                 let formData = {
                     'items': [{
                         'id': variantId,
