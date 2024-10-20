@@ -8,6 +8,7 @@ if (!customElements.get("custom-product-form")) {
                 this.submitBtn = this.querySelector('button');
                 this.tags = this.submitBtn.getAttribute("data-tags");
                 this.VariantChange = document.querySelectorAll(".upsell-variant");
+                this.cart = document.querySelector('cart-drawer');
                 this.VariantChange.forEach(element =>{
                     element.addEventListener('click',this.selectVariant.bind(this));
                 });
@@ -54,6 +55,8 @@ if (!customElements.get("custom-product-form")) {
                                   });
                                 this.updateCartDrawer();
                                 this.submitBtn.removeAttribute('disabled');
+                                this.cart.classList.add("animate");
+                                this.cart.classList.add("active");
                             }
                         })
                         .catch((error) => {
