@@ -7,66 +7,40 @@ class CartRemoveButton extends HTMLElement {
       const cartItems = this.closest('cart-items') || this.closest('cart-drawer-items');
       let buttons = cartItems.querySelectorAll('.cart-remove-button');
       if(this.dataset.productTags.includes("has_upsell-item")){
-         let variantIds=[];
-         let indexes=[];
-         buttons.forEach(function (btn) {
-          if(btn.dataset.productTags.includes('upsell_item') || btn.dataset.productTags.includes('has_upsell-item')){
-            let item = btn.closest('cart-remove-button');
-            let index = item.dataset.index;
-            indexes.push({line:index,quantity:0})
-            let id = btn.getAttribute('data-variant-id');
-              variantIds.push(id);
-          }
-
-        })
-        let updatedVariantIds = {};
-        for (let i = 0; i < variantIds.length; i++) {
-          updatedVariantIds[variantIds[i]] = 0; // Assign quantity to the variant ID
-         }
-       cartItems.multipleupdateQuantity(updatedVariantIds)
+        let hasUpsell = "has_upsell-item";
+        let upsellItem = "upsell_item";
+        this.fetchVarianTIds(buttons,hasUpsell,upsellItem,cartItems);
       }
-      else if(this.dataset.hasUpsell == "has_free_gift"){
-        buttons.forEach(function (btn) {
-          if(btn.hasAttribute('data-upsell-item') || btn.hasAttribute('data-has-upsell')){
-            let item = btn.closest('cart-remove-button')
-            let index = item.dataset.index;
-            indexes.push({line:index,quantity:0})
-            let id = btn.getAttribute('data-variant-id')
-              variantIds.push(id)
-          }
-        });
-        cartItems.updateQuantity(this.dataset.index, 0);
-
+      else if(this.dataset.productTags == "has_free_gift"){
+   
+      let hasFreeGift = "has_free_gift";
+      let freeGift = "free_gift";
+      this.fetchVarianTIds(buttons,hasFreeGift,freeGift,cartItems);
       }
       else{
         cartItems.updateQuantity(this.dataset.index, 0);
       }
     });
   }
-  getSectionsToRender() {
-    return [
-      {
-        id: 'main-cart-items',
-        section: document.getElementById('main-cart-items').dataset.id,
-        selector: '.js-contents',
-      },
-      {
-        id: 'cart-icon-bubble',
-        section: 'cart-icon-bubble',
-        selector: '.shopify-section',
-      },
-      {
-        id: 'cart-live-region-text',
-        section: 'cart-live-region-text',
-        selector: '.shopify-section',
-      },
-      {
-        id: 'main-cart-footer',
-        section: document.getElementById('main-cart-footer').dataset.id,
-        selector: '.js-contents',
-      },
-    ];
-  }
+    fetchVarianTIds (buttons,hasGiftorUpsell,giftUpsell,cartItems){
+      let variantIds=[];
+      let indexes=[];
+      buttons.forEach(function (btn) {
+        if(btn.dataset.productTags.includes(giftUpsell) || btn.dataset.productTags.includes(hasGiftorUpsell)){
+          let item = btn.closest('cart-remove-button');
+          let index = item.dataset.index;
+          indexes.push({line:index,quantity:0})
+          let id = btn.getAttribute('data-variant-id');
+            variantIds.push(id);
+        }
+      });
+      let updatedVariantIds = {};
+      for (let i = 0; i < variantIds.length; i++) {
+        updatedVariantIds[variantIds[i]] = 0; // Assign quantity to the variant ID
+       }
+       console.log("updatedVariantIds",updatedVariantIds)
+     cartItems.multipleupdateQuantity(updatedVariantIds)
+    }
 }
 
 customElements.define('cart-remove-button', CartRemoveButton);
