@@ -55,7 +55,7 @@ if (!customElements.get("custom-product-form")) {
                                   });
                                 this.updateCartDrawer();
                                 this.submitBtn.removeAttribute('disabled');
-                                this.cart.renderContents(response);
+                                console.log("cart",this.cart)
                             }
                         })
                         .catch((error) => {
