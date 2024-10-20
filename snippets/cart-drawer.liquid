@@ -341,7 +341,7 @@
                                 </quantity-input>
                               </div>
                               {% endunless %}
-                              {% if item.product.tags contain "free_gift" %}
+                              {% if item.product.tags contains "free_gift" %}
                               <cart-remove-button
                                 id="CartDrawer-Remove-{{ item.index | plus: 1 }}"
                                 data-index="{{ item.index | plus: 1 }}"
