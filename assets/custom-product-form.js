@@ -7,6 +7,7 @@ if (!customElements.get("custom-product-form")) {
                 this.form.addEventListener('submit', this.addItemToCart.bind(this));
                 this.submitBtn = this.querySelector('button');
                 this.tags = this.submitBtn.getAttribute("data-tags");
+                this.cart = document.querySelector('cart-drawer');
                 this.VariantChange = document.querySelectorAll(".upsell-variant");
                 this.cart = document.querySelector('cart-drawer');
                 this.VariantChange.forEach(element =>{
