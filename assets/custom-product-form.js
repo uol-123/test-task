@@ -55,7 +55,7 @@ if (!customElements.get("custom-product-form")) {
                                   });
                                 this.updateCartDrawer();
                                 this.submitBtn.removeAttribute('disabled');
-                                console.log("cart",this.cart)
+                                this.cart.querySelector(".drawer animate").classList.add("active")
                             }
                         })
                         .catch((error) => {
