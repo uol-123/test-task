@@ -345,7 +345,7 @@
                                 id="CartDrawer-Remove-{{ item.index | plus: 1 }}"
                                 data-index="{{ item.index | plus: 1 }}"
                                 data-product-tags="{{ item.product.tags }}"
-                                style="{% if item.product.tags contains "free_gift" %}display:none{% endif %}"
+                                class="{% if item.product.tags contains "free_gift" %} hidden {% endif %}"
                               >
                                 <button
                                   type="button"
