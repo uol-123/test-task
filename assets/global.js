@@ -85,45 +85,79 @@ document.querySelectorAll('[id^="Details-"] summary').forEach((summary) => {
 });
 
 const trapFocusHandlers = {};
-async function getCart(){
+async function getCart() {
   let cart = await fetch('/cart.js');
   let result = await cart.json();
-  let cartData= result;
+  let cartData = result;
   return cartData;
 }
-async function checkCart(variant_id) {
+async function checkCart(variant_id, tag) {
   let cart = await getCart();
   let item = cart.items.filter(item => item.variant_id == variant_id);
   let variantAsGift = '45323065819299';
-  console.log("item[0].quantity",item[0].quantity)
-  if (item[0].quantity == 3) {
-      let formData = {
-          'items': [{
-              'id': variantAsGift,
-              'quantity': 1
-          }]
-      };
-      fetch(window.Shopify.routes.root + 'cart/add.js', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
+  let isFreeGiftInCart = cart.items.filter(item => item.variant_id == variantAsGift)
+  if (item[0].quantity == 3 && isFreeGiftInCart.length <= 0 && tag == 'has_free_gift') {
+    let formData = {
+      'items': [{
+        'id': variantAsGift,
+        'quantity': 1
+      }]
+    };
+    fetch(window.Shopify.routes.root + 'cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+      .then(response => {
+        return response.json();
+      }).then((response) => {
+        publish(PUB_SUB_EVENTS.cartUpdate, {
+          source: 'product-form',
+          productVariantId: variantAsGift,
+          cartData: response,
+        });
       })
-          .then(response => {
-              return response.json();
-          }).then((response) => {
-              this.updateCartDrawer(response);
-              publish(PUB_SUB_EVENTS.cartUpdate, {
-                  source: 'product-form',
-                  productVariantId: variantAsGift,
-                  cartData: response,
-                });
-          })
-          .catch((error) => {
-              console.error('Error:', error);
-          });
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   }
+  if (item[0].handle == "i-phone-15" && item[0].quantity == 1) {
+    let element = document.querySelector('.upsell-item-container');
+    element.classList.remove("hide-section")
+    element.classList.show("show-section")
+  }
+  if (item[0].handle == "i-phone-15" && item.length == 0) {
+    let element = document.querySelector('.upsell-item-container');
+    element.classList.show("hide-section")
+    element.classList.remove("show-section")
+  }
+  if (item[0].quantity < 3 && isFreeGiftInCart.length > 0 && tag == 'has_free_gift') {
+    let updates = {};
+    updates[variantAsGift] = 0;
+    fetch(window.Shopify.routes.root + 'cart/update.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ updates })
+    })
+      .then(response => {
+        return response.json();
+      }).then((response) => {
+        publish(PUB_SUB_EVENTS.cartUpdate, {
+          source: 'product-form',
+          productVariantId: variantAsGift,
+          cartData: response,
+        });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
+
 }
 
 function trapFocus(container, elementToFocus = container) {
@@ -279,6 +313,7 @@ class QuantityInput extends HTMLElement {
   }
 
   onInputChange(event) {
+
     this.validateQtyRules();
   }
 
@@ -1083,7 +1118,7 @@ class SlideshowComponent extends SliderComponent {
     const slideScrollPosition =
       this.slider.scrollLeft +
       this.sliderFirstItemNode.clientWidth *
-        (this.sliderControlLinksArray.indexOf(event.currentTarget) + 1 - this.currentPage);
+      (this.sliderControlLinksArray.indexOf(event.currentTarget) + 1 - this.currentPage);
     this.slider.scrollTo({
       left: slideScrollPosition,
     });

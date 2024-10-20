@@ -1,0 +1,39 @@
+{{ 'upsell-item.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-product-form.js' | asset_url }}" defer="defer"></script>
+
+{%  assign upsell_product = all_products['iphone-15-mobile-cover'] %}
+{%  assign product = all_products['i-phone-15'] %}
+{%  assign variants = upsell_product.variants %}
+{% assign first_variant = upsell_product.variants.first %}
+{% assign check_product = false %}
+{% for item in cart.items %}
+    {% if item.product.id == product.id %}
+      {% assign check_product = true %}  <!-- Set flag to true if product is found -->
+    {% endif %}
+  {% endfor %}
+<div class="upsell-item-container {% if check_product %}show-section{% else %} hide-section{% endif %}" >
+    <div class="upsell-section">
+        <h2 class="title">You might also like:</h2>
+        <div class="upsell-product">
+            <h3>{{ upsell_product.title }}</h3>
+            <p> {{ upsell_product.description }}</p>
+            <ul class="variant-select">
+                {% for variant in variants %}
+                <li class="variant-option">
+                    <div >
+                    <input class="upsell-variant" {% if variant.id == first_variant.id %}checked{% endif %}  type="radio" id="{{ variant.id }}" name="upsell_variant" value="{{ variant.id }}" />
+                    <label for="variant-{{ variant.id }}" id="{{ variant.id }}">{{ variant.title }}</label>
+                    </div>
+                    <div>
+                        {{ variant.price | money_without_trailing_zeros }}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="atc-container">
+                {% render 'custom-buy-button' , product: upsell_product %} 
+            </div>
+
+        </div>
+      </div>
+</div>

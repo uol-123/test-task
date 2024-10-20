@@ -6,20 +6,24 @@ if (!customElements.get("custom-product-form")) {
                 this.form = this.querySelector('form');
                 this.form.addEventListener('submit', this.addItemToCart.bind(this));
                 this.submitBtn = this.querySelector('button');
-                this.variantId = this.submitBtn.getAttribute("data-variant-id");
-                this.hasFreeGift = this.submitBtn.getAttribute("data-has-free-gift");
+                this.tags = this.submitBtn.getAttribute("data-tags");
+                this.VariantChange = document.querySelectorAll(".upsell-variant");
+                this.VariantChange.forEach(element =>{
+                    element.addEventListener('click',this.selectVariant.bind(this));
+                });
             }
 
             addItemToCart(event) {
                 event.preventDefault();
+                let variantId = event.submitter.getAttribute("data-variant-id");
                 this.submitBtn.setAttribute('disabled',true);
                 let formData = {
                     'items': [{
-                        'id': this.variantId,
+                        'id': variantId,
                         'quantity': 1
                     }]
                 };
-                if (this.variantId && formData) {
+                if (variantId && formData) {
 
                     fetch(window.Shopify.routes.root + 'cart/add.js', {
                         method: 'POST',
@@ -34,15 +38,21 @@ if (!customElements.get("custom-product-form")) {
 
                         }).then(response => {
                             if (response) {
-                                if (this.hasFreeGift) {
-                                    checkCart(this.variantId)
+                                let tag=''
+                                if(this.tags.includes("has_upsell-item")){
+                                    tag= 'has_upsell-item';
+                                    checkCart(variantId,tag);
+                                }else if(this.tags.includes("has_free_gift")){
+                                    tag = 'has_free_gift';
+                                    checkCart(variantId,tag);
                                 }
+
                                 publish(PUB_SUB_EVENTS.cartUpdate, {
                                     source: 'product-form',
-                                    productVariantId: this.variantId,
+                                    productVariantId: variantId,
                                     cartData: response,
                                   });
-                                this.updateCartDrawer(response);
+                                this.updateCartDrawer();
                                 this.submitBtn.removeAttribute('disabled');
                             }
                         })
@@ -54,7 +64,7 @@ if (!customElements.get("custom-product-form")) {
             }
 
             // Function to update the cart drawer
-            async updateCartDrawer(cartData) {
+            async updateCartDrawer() {
                 let cartDrawer = document.querySelector(".drawer__inner-empty");
                 let cartDrawerDetails = document.querySelector("cart-drawer");
                 let cartDraweriTEMS = document.querySelector("cart-drawer-items");
@@ -77,6 +87,15 @@ if (!customElements.get("custom-product-form")) {
                 </div>`
 
                 cartCountElement.innerHTML = cartSVG;
+            }
+            selectVariant(event){
+                let targetElement = event.target;
+                let id = targetElement.getAttribute("id");
+                this.submitBtn.setAttribute('data-variant-id',id);
+                let hiddenInput = this.querySelector("[name='product-id']");
+                hiddenInput.setAttribute("value",id)
+
+
             }
 
 

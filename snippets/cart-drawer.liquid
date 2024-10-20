@@ -61,6 +61,7 @@
           {%- endif -%}
         </div>
       {%- endif -%}
+ 
       <div class="drawer__header">
         <h2 class="drawer__heading">{{ 'sections.cart.title' | t }}</h2>
         <button
@@ -74,11 +75,15 @@
           </span>
         </button>
       </div>
+   <div>
+   
+    </div>
       <cart-drawer-items
         {% if cart == empty %}
           class=" is-empty"
         {% endif %}
       >
+        {% render 'upsell-item' , product: product, cart:cart %}
         <form
           action="{{ routes.cart_url }}"
           id="CartDrawer-Form"
@@ -118,7 +123,9 @@
 
                   <tbody role="rowgroup" class="item-container">
                     {%- for item in cart.items -%}
-                      <tr id="CartDrawer-Item-{{ item.index | plus: 1 }}" class="cart-item" role="row">
+                  
+                      <tr id="CartDrawer-Item-{{ item.index | plus: 1 }}" class="cart-item" {% if item.product.type == 'upsell_item' %} data-upsell-item="{{ item.product.type }}" {% endif %} {% if item.product.type == 'has_upsell_item' %} data-has-upsell ="{{ item.product.type }}" {% endif %} role="row">
+                    
                         <td class="cart-item__media" role="cell" headers="CartDrawer-ColumnProductImage">
                           {% if item.image %}
                             {% comment %} Leave empty space due to a:empty CSS display: none rule {% endcomment %}
@@ -232,25 +239,25 @@
                                   {{ 'products.product.price.regular_price' | t }}
                                 </span>
                                 <s class="cart-item__old-price price price--end">
-                                  {{ item.original_line_price | money }}
+                                  {{ item.original_line_price | money_without_trailing_zeros }}
                                 </s>
                                 <span class="visually-hidden">
                                   {{ 'products.product.price.sale_price' | t }}
                                 </span>
                                 <span class="price price--end">
-                                  {{ item.final_line_price | money }}
+                                  {{ item.final_line_price | money_without_trailing_zeros }}
                                 </span>
                               </div>
                             {%- else -%}
                               <span class="price price--end">
-                                {{ item.original_line_price | money }}
+                                {{ item.original_line_price | money_without_trailing_zeros }}
                               </span>
                             {%- endif -%}
 
                             {%- if item.variant.available and item.unit_price_measurement -%}
                               <div class="unit-price caption">
                                 <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
-                                {{ item.unit_price | money }}
+                                {{ item.unit_price | money_without_trailing_zeros }}
                                 <span aria-hidden="true">/</span>
                                 <span class="visually-hidden"
                                   >&nbsp;{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span
@@ -317,6 +324,7 @@
                                     aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
                                     id="Drawer-quantity-{{ item.index | plus: 1 }}"
                                     data-index="{{ item.index | plus: 1 }}"
+                                    data-tag="{{ item.product.tags }}"
                                   >
                                   <button class="quantity__button" name="plus" type="button">
                                     <span class="visually-hidden">
@@ -336,11 +344,13 @@
                               <cart-remove-button
                                 id="CartDrawer-Remove-{{ item.index | plus: 1 }}"
                                 data-index="{{ item.index | plus: 1 }}"
+                                data-product-tags="{{ item.product.tags }}"
                               >
                                 <button
                                   type="button"
                                   class="button button--tertiary cart-remove-button"
                                   aria-label="{{ 'sections.cart.remove_title' | t: title: item.title | escape }}"
+                                  data-product-tags="{{ item.product.tags }}"
                                   data-variant-id="{{ item.variant.id }}"
                                 >
                                   <span class="svg-wrapper">
@@ -461,6 +471,7 @@
           <div id="CartDrawer-CartErrors" role="alert"></div>
         </form>
       </cart-drawer-items>
+    
       <div class="drawer__footer">
         {%- if settings.show_cart_note -%}
           <details id="Details-CartDrawer">
@@ -502,7 +513,7 @@
 
           <div class="totals" role="status">
             <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
-            <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
+            <p class="totals__total-value">{{ cart.total_price | money_without_trailing_zeros }}</p>
           </div>
 
           <small class="tax-note caption-large rte">
@@ -563,6 +574,7 @@
           </button>
         </div>
       </div>
+    
     </div>
   </div>
 </cart-drawer>

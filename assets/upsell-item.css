@@ -1,0 +1,28 @@
+.variant-option{
+    display:flex;
+    justify-content: space-between;
+}
+
+.title{
+    text-align: center;
+    color: #339999;
+    margin: 0rem 0 0rem !important;
+}
+.atc-container{
+    display: block;
+    text-align: center;
+}
+.add-to-cart{
+    padding: 8px 16px 8px 12px !important;
+    width: 40%;
+    border-radius: 3px;
+    background-color: #339999;
+    border: 1px solid #339999;
+    margin-bottom:10px;
+}
+.hide-section{
+    display:none;
+}
+.show-section{
+    display:block;
+}
