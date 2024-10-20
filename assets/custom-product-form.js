@@ -55,9 +55,8 @@ if (!customElements.get("custom-product-form")) {
                                   });
                                 this.updateCartDrawer();
                                 this.submitBtn.removeAttribute('disabled');
-                              animate active
-                              this.cart.querySelector(".drawer").classList.add("animate")
-                                this.cart.querySelector(".drawer").classList.add("active")
+                               this.cart.querySelector(".drawer").classList.add("animate");
+                                this.cart.querySelector(".drawer").classList.add("active");
                             }
                         })
                         .catch((error) => {
