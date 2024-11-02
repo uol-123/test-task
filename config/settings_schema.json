@@ -1463,7 +1463,13 @@
         "id": "cart_color_scheme",
         "label": "t:sections.all.colors.label",
         "default": "scheme-1"
-      }
+      },
+      {
+      "type": "metaobject",
+      "id":"product_meta_object",
+      "label": "use metaabject",
+      "metaobject_type": "gift_wrapper"
+    }
     ]
   }
 ]
