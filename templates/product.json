@@ -15,7 +15,7 @@
         "vendor": {
           "type": "text",
           "settings": {
-            "text": "{{ product.vendor }}{{ product.metafields.custom.customize_gift.value.age.value }}{{ product.metafields.custom.customize_gift.value.title.value }}",
+            "text": "{{ product.vendor }}",
             "text_style": "uppercase"
           }
         },
