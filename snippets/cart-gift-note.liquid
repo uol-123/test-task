@@ -1,0 +1,538 @@
+<div class="align-heading-check e-gift-heading-div">
+  <div style="" class="GmAddedContainer">
+    <label class="GmCheckboxContainer">
+      <input type="checkbox" name="attributes[is this a gift?]" id="note-trigger" value="no">
+      <span class="checkmark"></span>
+    </label>
+    <div class="GmAddedText">Add Free e-Gift Message?</div>
+  </div>
+  <div class="edit-option">
+    <p>Edit</p>
+  </div>
+</div>
+
+<div id="note-wrap" style="display:none; line-height: 30px;text-align: left;">
+  <div>
+    <label class="GmLabelForm">E-Gift Message or Printed Message?</label>
+    <div>
+      <label> <input type="radio" name="message-type" value="e-gift" checked> E-Gift </label>
+      <label> <input type="radio" name="message-type" value="printed"> Printed </label>
+    </div>
+  </div>
+
+  <!-- Gift form goes here on toggle -->
+  <p class="line-item-property__field Gmfont" id="giftee-email">
+    <label class="GmLabelForm" for="giftees-email">RECIPIENT EMAIL</label>
+    <input
+      class="GmInputFiled"
+      placeholder="Recipient Email"
+      id="giftees-email"
+      type="email"
+      name="properties[Giftees Email]"
+    >
+  </p>
+
+  <div class="GmFlexRow" id="giftee">
+    <p class="line-item-property__field Gmfont">
+      <label class="GmLabelForm" for="giftees-first-name">FIRST NAME</label>
+      <input
+        class="GmInputFiled"
+        placeholder="Recipient First Name"
+        id="giftees-first-name"
+        type="text"
+        maxlength="25"
+        name="properties[Giftees First Name]"
+      >
+    </p>
+
+    <p class="line-item-property__field Gmfont">
+      <label class="GmLabelForm" for="giftees-last-name">LAST NAME</label>
+      <input
+        class="GmInputFiled"
+        placeholder="Recipient Last Name"
+        id="giftees-last-name"
+        type="text"
+        maxlength="25"
+        name="properties[Giftees Last Name]"
+        placeholder="test"
+      >
+    </p>
+  </div>
+  <div class="GmFlexRow" id="gifter">
+    <p class="line-item-property__field Gmfont">
+      <label class="GmLabelForm" for="gifter-first-name">FIRST NAME</label>
+      <input
+        class="GmInputFiled"
+        placeholder="Gift Giver First Name"
+        id="gifter-first-name"
+        type="text"
+        maxlength="25"
+        name="properties[Gifter First Name]"
+      >
+    </p>
+
+    <p class="line-item-property__field Gmfont">
+      <label class="GmLabelForm" for="gifter-last-name">LAST NAME</label>
+      <input
+        class="GmInputFiled"
+        placeholder="Gift Giver Last Name"
+        id="gifter-last-name"
+        type="text"
+        maxlength="25"
+        name="properties[Gifter Last Name]"
+        placeholder="test"
+      >
+    </p>
+  </div>
+
+  <p class="line-item-property__field Gmfont" style="position:relative;">
+    <label class="GmLabelForm" for="gift-message">GIFT MESSAGE</label>
+    <textarea
+      class="GmInputFiled"
+      placeholder="Gift Message"
+      id="gift-message"
+      maxlength="200"
+      type="text"
+      name="properties[Gift Message]"
+      style="min-height:150px;"
+    ></textarea>
+    <span id="no-of-chars" style="position:absolute;right:5px;bottom:0px;"></span>
+  </p>
+
+  <div class="giftBtnWrapper" style="justify-content:end">
+    <!--
+      <button id="cancel-note" class="btn btn-custom btn-orange-bg" style="min-width:150px !important">Cancel</button>
+    -->
+    <button
+      id="save-note"
+      type="button"
+      class="btn btn-custom btn-orange-bg"
+      onclick="saveNotes()"
+      style="min-width:150px !important"
+    >
+      Save
+    </button>
+  </div>
+</div>
+
+<input type="hidden" name="form_type" value="product">
+<!--
+  <input class="data-frequency" type="hidden" name="properties[data-frequency]" id="data-frequency" value="12">
+  <input type="hidden" name="properties[data-unit-type]" id="data-unit-type" value="Months">
+-->
+<input type="hidden" name="properties[gift-email]" id="gift-email" value="">
+<input type="hidden" name="properties[gift-first-name]" id="gift-first-name" value="">
+<input type="hidden" name="properties[gift-last-name]" id="gift-last-name" value="">
+<input type="hidden" name="properties[gift-message-content]" id="gift-message-content" value="">
+<!-- gift notes end -->
+<script>
+  
+  
+  $(document).ready(function() {
+  // Initial setup
+    $("#gifter").hide()
+  $('input[name="message-type"]').change(function() {
+    if ($(this).val() === 'e-gift') {
+    $("#gifter").hide()
+    $("#giftee").show()
+
+    } else if ($(this).val() === 'printed') {
+      // Show printed message fields and hide e-gift fields
+      $("#giftee-email").hide()
+    $("#gifter").show()
+    $("#giftee").show()
+    }
+  });
+});
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  function saveNotes(e){
+              if (
+            $("#note-trigger").is(":checked") &&
+            checkAddGiftForm($("#note-wrap")) == false
+          ) {
+            return;
+          } else if (
+            $("#note-trigger").is(":checked") &&
+            checkAddGiftForm($("#note-wrap"))
+          ) {
+            let giftees_email = $("#giftees-email").val();
+            let giftees_first_name = $("#giftees-first-name").val();
+            let giftees_last_name = $("#giftees-last-name").val();
+            let gift_giver_first_name = $("#gifter-first-name").val();
+            let gift_giver_last_name = $("#gifter-last-name").val();
+            let giftees_message = $("#gift-message").val();
+            let gift_type = $('input[name="message-type"]:checked').val();
+            let name = giftees_first_name + " " + giftees_last_name;
+                let gift_giver_name= gift_giver_first_name + " " + gift_giver_last_name
+            let note = "Gift Note: " + giftees_message;
+
+            $.ajax({
+              type: "POST",
+              url: "/cart/update.js",
+              data: {
+                attributes: {
+                  "Giftee Name": name,
+                  "Giftee Email": giftees_email,
+                  "Gift Giver Name":gift_giver_name,
+                  undigital_giftee_name: name,
+                  undigital_giftee_message: giftees_message,
+                  undigital_gift_giver_name: gift_giver_name,
+                  "Giftee Message": giftees_message,
+                },
+                note: note,
+              },
+              dataType: "json",
+                   beforeSend: function(){
+                $("#save-note").text("Saving...")
+     },
+              success: function (result) {
+                                $("#save-note").text("Saved!")
+
+              },
+                   complete: function(){
+                              setTimeout(function(){$("#save-note").text("Save")},1500)  
+     },
+              error: function (err) {
+                console.log("error", err);
+              },
+            });
+          }
+    
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  function setCookie(name,value) {
+    var d = new Date();
+     d.setTime(d.getTime() + (1*24*60*60*1000));
+
+    var expires = "expires=" + d.toGMTString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+}
+  function getCookie(name) {
+    var cname = name + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i < ca.length; i++){
+        var c = ca[i];
+        while(c.charAt(0) == ' '){
+            c = c.substring(1);
+        }
+        if(c.indexOf(cname) == 0){
+            return c.substring(cname.length, c.length);
+        }
+    }
+    return "";
+}
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+var emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+  function checkAddGiftForm(container){
+
+var error_msg="<span class='GiftErrorMsg'>This is a mandatory field</span>";
+    var invalidEmail="<span class='GiftErrorMsg'>This is an invalid email!</span>";
+    var is_empty=false; 
+    if(container.find('#giftees-email').val()==''){
+if(container.find('#giftees-email').parent().find('.GiftErrorMsg').length==0)
+container.find('#giftees-email').parent().append(error_msg); is_empty=true; }
+    else if(!emailRegex.test(container.find('#giftees-email').val())){
+container.find('#giftees-email').parent().find('.GiftErrorMsg').remove();
+container.find('#giftees-email').parent().append(invalidEmail);}
+    else{ container.find('#giftees-email').parent().find('.GiftErrorMsg').remove() }
+
+if(container.find('#giftees-first-name').val()==''){
+if(container.find('#giftees-first-name').parent().find('.GiftErrorMsg').length==0)
+container.find('#giftees-first-name').parent().append(error_msg); is_empty=true; }
+else{ container.find('#giftees-first-name').parent().find('.GiftErrorMsg').remove() }
+
+if(container.find('#giftees-last-name').val()==''){
+if(container.find('#giftees-last-name').parent().find('.GiftErrorMsg').length==0)
+container.find('#giftees-last-name').parent().append(error_msg); is_empty=true; }
+else{
+container.find('#giftees-last-name').parent().find('.GiftErrorMsg').remove() }
+
+if(container.find('#gift-message').val()==''){
+if(container.find('#gift-message').parent().find('.GiftErrorMsg').length==0)
+container.find('#gift-message').parent().append(error_msg); is_empty=true; }
+else{
+container.find('#gift-message').parent().find('.GiftErrorMsg').remove() }
+
+if(is_empty){ 
+  return false;
+}
+
+return true; }
+
+$(document).ready(function() {
+$("#giftees-first-name").val(getCookie("gFName"))
+$("#giftees-last-name").val(getCookie("gLName"))
+$("#giftees-email").val(getCookie("gEmail"))
+$("#gift-message").val(getCookie("gMsg"))
+if(getCookie("giftCheckBox")=="checked") { 
+  $("#note-trigger").attr("checked","checked");
+$("#note-trigger").val("yes"); 
+  $('#note-wrap').slideToggle('500'); 
+  $('.edit-option').show(200); 
+
+ countChar=$("#gift-message").val().length;
+
+$("#no-of-chars").text( countChar + '/' + 200 )
+
+} 
+  $('#note-trigger').click(function () { 
+    countChar= $("#gift-message").val().length;
+
+$("#no-of-chars").text( countChar + '/' + 200 )
+
+
+    if ($(this).is(":checked")) { 
+  $("#note-trigger").val("yes");
+  $('#note-wrap').slideToggle('500');
+$('.edit-option').show(200); }
+else { 
+        $.ajax({
+          type: 'POST',
+          url: '/cart/update.js',
+          data: {attributes:{"Giftee Name":'',"Giftee Email":'',"Giftee Message":''},note:''},
+          dataType: 'json'
+        });
+  $('#note-wrap').slideUp('500');
+      $("#note-trigger").val("no");
+$('.edit-option').hide(200); }
+
+
+}); 
+  $('.edit-option').click(function(){ 
+    $('#note-wrap').slideToggle('500');
+    $(this).toggleClass('rotated-icon'); }); });
+$('#note-trigger').change(function() { 
+  $(this).is(':checked') ? setCookie("giftCheckBox","checked") : setCookie("giftCheckBox","unChecked") });
+
+$("#giftees-first-name").change(function(){setCookie("gFName",$(this).val())});
+$("#giftees-last-name").change(function(){ setCookie("gLName",$(this).val())}); 
+  $("#giftees-email").change(function(){ setCookie("gEmail",$(this).val())}); 
+  $("#gift-message").on('change keydown keyup',function(){
+  countChar= $(this).val().length
+
+$("#no-of-chars").text( countChar + '/' + 200 ) 
+setCookie("gMsg",$(this).val())
+});
+</script>
+<style>
+    .align-heading-check {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+  }
+
+    .edit-option.rotated-icon p::before {transform: rotate(136deg);top: 7px;}
+
+  .edit-option p {
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding-right: 16px;
+  }
+
+  .edit-option p::before {
+      border-style: solid;
+      border-width: 2px 2px 0 0;
+      content: '';
+      display: inline-block;
+      height: 8px;
+      right: 0;
+      position: absolute;
+      top: 10px;
+      transform: rotate(-45deg);
+      vertical-align: top;
+      width: 8px;
+      transition: .3s linear;
+  }
+    .edit-option {
+      display: none;
+    }
+      /* Customize the label (the container) */
+    .GmCheckboxContainer {
+      position: relative;
+    }
+
+    /* Hide the browser's default checkbox */
+    .GmCheckboxContainer input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      background-color: #FFF;
+      border:solid 1px gray;
+      border-radius:5px;
+    }
+
+    .GmCheckboxContainer:hover input ~ .checkmark {
+      background-color: #FFF;
+    }
+
+    .GmCheckboxContainer input:checked ~ .checkmark {
+      background-color: var(--brand_color_1);
+    }
+
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+
+    .GmCheckboxContainer input:checked ~ .checkmark:after {
+      display: block;
+    }
+
+    .GmCheckboxContainer .checkmark:after {
+      left: 7px;
+      top: 3px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+    .GmAddedContainer{
+      display: flex;
+      flex-direction: row;
+    }
+      .GmAddedText{
+        margin-left: 25px;
+        font-family:'Montserrat';
+        font-weight: 500;
+        font-size: 14px;
+        margin-bottom:10px;
+
+      }
+      .GmLabelForm{
+        margin-bottom:0px;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: black;
+      }
+     .GmInputFiled{
+      display: block;
+      width:100%;
+      border-radius: 10px;
+      border: 1px solid #1A1A1A;
+     }
+     .GmInputFiled::placeholder{
+      color:gray !important;
+      font-size: 15px;
+     }
+
+      @media only screen and (max-width:960px){
+       .GmInputFiled::placeholder{
+        color:gray !important;
+        font-size: 12px !important;
+       }
+      }
+     .Gmfont{
+      margin-right: 12px;
+      font-family: 'Montserrat';
+      font-weight: 500; font-size: 15px;
+      color:#828282;
+      letter-spacing: 5px;
+     }
+     .GmFlexRow{
+      display: flex;
+      flex-direction: row;
+     }
+     .GmFlexRow p{
+      width:50%;
+      display: flex;
+      flex-direction: column;
+     }
+     .GmNoteText{
+      margin-right: 35px;
+      margin-top: 10px;
+      width: 100%;
+      font-size: 16px;
+      font-family: 'Lato';
+       text-transform: none;
+     }
+     .GiftErrorMsg{
+      color:red;
+      font-size: 13px;
+      letter-spacing: 1px;
+     }
+    .GiftErrorMsg{
+       animation: hideAnimation 0s ease-in 5s;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes hideAnimation {
+      to {
+        display: none;
+      }
+    }
+     .giftBtnWrapper{
+        display:flex;
+        justify-content:space-between;
+      }
+     @media only screen and (max-width: 350px) {
+      .GmFlexRow{
+        flex-direction:column;
+        margin-right:12px
+      }
+       .GmFlexRow p{
+         width:100%;
+       }
+      }
+      @media only screen and (max-width: 600px) {
+      .giftBtnWrapper{
+       flex-direction:column
+      }
+        .giftBtnWrapper > button{
+         margin-bottom:10px
+        }
+      }
+</style>
