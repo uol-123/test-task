@@ -100,9 +100,9 @@
                 </p>
               {%- when 'title' -%}
                 <div class="product__title" {{ block.shopify_attributes }}>
-                 --  {{ section.settings.product_meta_object }} "seb" ---
-                  {% assign specific = section.settings.product_meta_object %}
-                  {{ specific.age }} meta
+                 --  {{ settings.product_meta_object }} "seb" ---
+                  {% assign specific = settings.product_meta_object %}
+                  {{ specific.product | json }} meta
                   <h1>{{ product.title | escape }}</h1>
                   <a href="{{ product.url }}" class="product__title">
                     <h2 class="h1">
