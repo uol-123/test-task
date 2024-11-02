@@ -84,7 +84,7 @@
         "enable_video_looping": false,
         "padding_top": 36,
         "padding_bottom": 12,
-        "product_meta_object": "gift-wrapper-smadjs3b"
+        "product_meta_object": "{{ product.metafields.custom.customize_gift.value.new.value }}"
       }
     },
     "related-products": {
