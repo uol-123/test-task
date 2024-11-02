@@ -100,6 +100,7 @@
                 </p>
               {%- when 'title' -%}
                 <div class="product__title" {{ block.shopify_attributes }}>
+                 --  {{ sections.settings.product_meta_object.value }} ---
                   <h1>{{ product.title | escape }}</h1>
                   <a href="{{ product.url }}" class="product__title">
                     <h2 class="h1">
@@ -218,7 +219,7 @@
                       <div class="summary__title">
                         {% render 'icon-accordion', icon: block.settings.icon %}
                         <h2 class="h4 accordion__title inline-richtext">
-                          {{ sectins.settings.product_meta_object }}
+                          {{ sections.settings.product_meta_object }}
                           {{ block.settings.heading | default: block.settings.page.title | escape }}
                         </h2>
                       </div>
