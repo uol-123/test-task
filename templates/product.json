@@ -15,7 +15,7 @@
         "vendor": {
           "type": "text",
           "settings": {
-            "text": "{{ product.vendor }}",
+            "text": "{{ product.vendor }}{{ product.metafields.custom.customize_gift.value.age.value }}{{ product.metafields.custom.customize_gift.value.title.value }}",
             "text_style": "uppercase"
           }
         },
@@ -83,7 +83,8 @@
         "hide_variants": true,
         "enable_video_looping": false,
         "padding_top": 36,
-        "padding_bottom": 12
+        "padding_bottom": 12,
+        "product_meta_object": ""
       }
     },
     "related-products": {
