@@ -84,6 +84,7 @@
         {% endif %}
       >
         {% render 'upsell-item' , product: product, cart:cart %}
+         {%- render 'cart-gift-note', section: section, cart_items: cart.items -%}
         <form
           action="{{ routes.cart_url }}"
           id="CartDrawer-Form"
