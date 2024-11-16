@@ -202,13 +202,5 @@ slideshow-component:not(.page-width) .slider-buttons {
 .utility-bar{
   background-color: #FF767E;
   color: #fff;
-  font-family: Avenir Next;
-  font-size: 10.77px;
-  font-weight: 400;
-  line-height: 16.9px;
-  letter-spacing: 1px;
-  text-align: center;
-  text-underline-position: from-font;
-  text-decoration-skip-ink: none;
 
 }
