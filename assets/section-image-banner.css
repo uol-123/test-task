@@ -133,7 +133,7 @@
   }
 
   .banner__content.banner__content--bottom-center {
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: center;
   }
 
@@ -388,7 +388,6 @@
   content: '';
   position: absolute;
   top: 0;
-  background: #000000;
   opacity: 0;
   z-index: 1;
   width: 100%;
