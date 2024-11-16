@@ -489,3 +489,6 @@
     color: currentColor;
   }
 }
+.banner__box h2{
+  text-transform: uppercase;
+}
