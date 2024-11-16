@@ -3607,10 +3607,10 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
-.header-wrapper.color-scheme-1.gradient.header-wrapper--border-bottom{
+/* .header-wrapper.color-scheme-1.gradient.header-wrapper--border-bottom{
   position: fixed;
     top: 38px;
     left: 0;
     z-index: 99;
     width: 100%;
-}
+} */
