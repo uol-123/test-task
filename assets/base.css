@@ -2811,11 +2811,11 @@ details[open] > .header__submenu {
 }
 
 .header__menu-item span {
-  transition: text-decoration var(--duration-short) ease;
+  transition: none;
 }
 
 .header__menu-item:hover span {
-  text-decoration: underline;
+  text-decoration: none;
   text-underline-offset: 0.3rem;
 }
 
@@ -2835,7 +2835,7 @@ details[open] > .header__menu-item .icon-caret {
   transition: text-decoration-thickness var(--duration-short) ease;
   color: rgb(var(--color-foreground));
   text-decoration: none;
-  color: #00AFC0;
+  color: #00AFC0 !important;
   text-underline-offset: 0.3rem;
 }
 
