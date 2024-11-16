@@ -492,3 +492,11 @@
 .banner__box h2{
   text-transform: uppercase;
 }
+.banner__box a{
+  text-transform: uppercase;
+  border-radius: 12px;
+    border: 1px solid #000;
+    background: #FFDA22;
+    color: #000;
+}
+
